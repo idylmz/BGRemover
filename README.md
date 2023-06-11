@@ -46,7 +46,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-2. Open your web browser and visit [http://localhost:5000](http://localhost:5000).
+2. Open your web browser and visit [http://localhost:8000](http://localhost:8000).
 
 3. Upload an image and click the "Remove Background" button.
 
