@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Rendering Dynamic Images Using Flask</title>
-</head>
-<body>
-<form action="{{ url_for('upload_file') }}" enctype="multipart/form-data" method="POST">
-    <input name="img" type="file"/>
-    <input type="submit"/>
-</form>
+  </head>
+  <body>
+    <form
+      action="{{ url_for('upload_file') }}"
+      enctype="multipart/form-data"
+      method="POST"
+    >
+      <input name="img" type="file" id="img" />
+      <input type="submit" />
+    </form>
 
-{% if img %}
-<h1>Rendered Image</h1>
-<img src="{{img}}">
-{% else %}
-<h1>Image will be render here...</h1>
-{% endif %}
-</body>
+    <button id="btnDelete">Sil</button>
+
+    {% if img %}
+    <h1>Rendered Image</h1>
+    <img src="{{img}}" />
+    {% else %}
+    <h1>Image will be render here...</h1>
+    {% endif %}
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    $("#btnDelete").click(() => {
+      console.log($("#img"));
+      $.ajax({
+        type: "delete",
+        url: "/?fileName=image.png",
+      });
+    });
+  </script>
 </html>

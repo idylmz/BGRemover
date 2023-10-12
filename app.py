@@ -1,45 +1,36 @@
-from flask import Flask, send_file, render_template, request
+import base64
+from http.client import OK
+import io
+import os
+from flask import Flask, jsonify, send_file, render_template, request
+
 # Importing Required Modules
 from rembg import remove
 from PIL import Image
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.config['UPLOAD'] = "."
+app.config["UPLOAD"] = "."
 
 
-
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('./home.html')
+    return render_template("./home.html")
 
-@app.route('/upload', methods=['POST'])
+
+@app.route("/upload", methods=["POST"])
 def upload_file():
-    file = request.files['img']
-    print(file.filename)
-    filename = secure_filename(file.filename)
-    file.save(filename)
-    res = remove_bg(filename)
-    
-    return send_file(res, mimetype="image/png")
-    
-
-
-def remove_bg(filename):
-    # Store path of the image in the variable input_path
-    input_path =  "./TEST.jpg"
-  
-    # Store path of the output image in the variable output_path
-    output_path = "./TESTout.png"
-  
-    # Processing the image
-    input = Image.open(filename)
-
-  
-    # Removing the background from the given Image
+    file = request.files["img"]
+    filename = file.filename + ".png"
+    input = Image.open(file)
     output = remove(input)
-  
-    #Saving the image in the given path
-    output.save(output_path)
-    return output
-    
+    output.save(filename, format="png")
+
+    return send_file(filename, mimetype="image/png")
+
+
+@app.route("/", methods=["delete"])
+def delete_file():
+    filename = request.args.get("fileName")
+    if os.path.isfile(filename):
+        os.remove(filename)
+    return "ok"
